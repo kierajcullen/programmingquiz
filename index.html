@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Programming Quiz</title>
+  </head>
+  <body>
+    <header>
+      <!-- Welcome, make sure this is not displayed once the quiz starts -->
+      <div class="welcome">
+        <h1>Welcome to the Quiz!</h1>
+        <h2>You can do this.</h2>
+        <h3>
+          This comprehensize programming quiz will feature one question at a
+          time. Challenge yourself and beat the clock.
+        </h3>
+        <div id="timer"></div>
+      </div>
+    </header>
+    <div class="container">
+      <div id="question-container" class="hide">
+        <div id="questionEl"></div>
+        <div id="answer-buttons" class="btn-grid">
+          <button class="btn"></button>
+          <button class="btn"></button>
+          <button class="btn"></button>
+          <button class="btn"></button>
+        </div>
+      </div>
+      <!-- 2 buttons that clients control, start and next... display correct answer using color cause that would be different -->
+      <div class="contro">
+        <button id="start-btn" class="start-btn btn">Start</button>
+        <button id="next-btn" class="next-btn btn hide">Next</button>
+      </div>
+    </div>
+    <!-- define javascript script -->
+    <script src="script.js"></script>
+  </body>
+</html>
