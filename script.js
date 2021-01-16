@@ -47,11 +47,18 @@ function setNextQuestion() {
 function displayQuestion(question) {
   questionEl.innerText = question.question;
   question.answer.forEach((answer) => {
+    // display buttons and text
     const button = document.createElement("button");
     button.innerText = answer.text;
     button.classList.add("btn");
     if (answer.correct) {
       button.dataset.correct = answer.correct;
+      correctAnswers++;
+    } else if (correctAnswers > 0) {
+      // decrement time... link to timer
+      correctAnswers--;
+      //becomes a local variable
+      secondsLeft = secondsLeft - 5;
     }
     button.addEventListener("click", selectAnswer);
     answerEl.appendChild(button);
@@ -102,7 +109,7 @@ var questions = [
   },
 ];
 
-//display timer
+//display 60 second timer after the quiz starts
 var secondsLeft = 60;
 function setTime() {
   var timerInterval = setInterval(function () {
@@ -166,6 +173,7 @@ function clearStatusClass(element) {
   element.classList.remove("incorrect");
 }
 
-//Add timer
-//hide initial display once the user clicks start
-//create function for user to input score at the the end
+//Not responsive
+//Create a timer that decrements when an answer is wrong
+//my start button is small af
+//Create function for user to input score at the the end
