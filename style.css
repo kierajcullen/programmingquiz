@@ -79,7 +79,7 @@ body.incorrect {
   /* text-align: center; */
 }
 
-.controls {
+.commands {
   display: flex;
   justify-content: center;
   align-items: center;
