@@ -1,6 +1,6 @@
 # Programming Quiz
 
-This dynamic application features HTML, CSS and Javascript .....
+This programming quiz features HTML, CSS and Javascript. (add more to this description)
 
 # GitHub Repository
 
