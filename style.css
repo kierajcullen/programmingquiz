@@ -7,24 +7,31 @@
 
 :root {
   --hue-neutral: 200;
-  --hue-incorrect: 0;
   --hue-correct: 145;
+  --hue-incorrect: 0;
 }
 
 header {
   text-align: center;
   top: 0;
   position: absolute;
+  width: 500px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
 }
 
 body {
   padding: 0;
   margin: 0;
   display: flex;
-  width: 100vw;
-  height: 100vh;
+  /* viewport height */
+  /* ask elena why I have to use vh instead of % or pixels */
+  height: 110vh;
+  /* width: 100vw; */
   justify-content: center;
   align-items: center;
+  background-color: #dfcfbe;
 }
 
 body.correct {
@@ -40,6 +47,7 @@ body.incorrect {
   background-color: white;
   border-radius: 5px;
   padding: 10px;
+  /*  */
   box-shadow: 0 0 10px 2px;
   font-size: large;
 }
