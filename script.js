@@ -15,7 +15,7 @@ let shuffleQuestions;
 
 //start quiz
 startButton.addEventListener("click", startGame);
-//fat arrow function, same as fununction
+//fat arrow function, same as function (mentioned in class, not completely comfortable with this yet)
 nextButton.addEventListener("click", () => {
   // increment through classes and display
   currentQuestion++;
@@ -38,6 +38,7 @@ function startGame() {
 function displayQuestion() {
   answerEl.innerHTML = "";
   questionEl.innerText = questions[currentQuestion].question;
+  // there are always 4 possible choices for each question
   for (var i = 0; i < 4; i++) {
     // display buttons and text
     var button = document.createElement("button");
@@ -143,9 +144,9 @@ function checkAnswer(event) {
   var userAnswer = event.target.innerText;
   if (userAnswer === questions[currentQuestion].correctAnswer) {
     alert("You got it!");
-    score++;
+    correctAnswers++;
   } else {
-    alert("Wrong.");
+    alert("That was wrong, but it's ok.");
     secondsLeft = secondsLeft - 5;
     // timerEl.textContent = "Timer: " + secondsLeft + " seconds";
   }
