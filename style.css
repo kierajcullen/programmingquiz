@@ -2,7 +2,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: "Segoe UI", "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  font-family: "Comic Sans MS";
 }
 
 :root {
@@ -25,29 +25,18 @@ body {
   padding: 0;
   margin: 0;
   display: flex;
-  /* viewport height */
-  /* ask elena why I have to use vh instead of % or pixels */
   height: 110vh;
-  /* width: 100vw; */
   justify-content: center;
   align-items: center;
+  /* text-align: center; */
   background-color: #dfcfbe;
 }
 
-body.correct {
-  --hue: var(--hue-correct);
-}
-
-body.incorrect {
-  --hue: var(--hue-incorrect);
-}
-
 .container {
-  max-width: 90%;
+  /* max-width: 90%; */
   background-color: white;
   border-radius: 5px;
   padding: 10px;
-  /*  */
   box-shadow: 0 0 10px 2px;
   font-size: large;
 }
@@ -60,8 +49,9 @@ body.incorrect {
 
 .btn {
   --hue: var(--hue-neutral);
-  border: 1px solid hsl(var(--hue), 100%, 30%);
+  /* hue, saturation, lightness */
   background-color: hsl(var(--hue), 100%, 50%);
+  border: 1px solid hsl(var(--hue), 100%, 30%);
   border-radius: 5px;
   padding: 5px 10px;
   color: white;
@@ -72,19 +62,13 @@ body.incorrect {
 }
 
 .btn.correct {
-  --hue: var(--hue-correct);
   color: black;
-}
-
-.btn.incorrect {
-  --hue: var(--hue-incorrect);
 }
 
 .start-btn,
 .next-btn {
   font-weight: bold;
-  padding: 10px 20px;
-  /* text-align: center; */
+  padding: 10px 25px;
 }
 
 .commands {
@@ -95,4 +79,17 @@ body.incorrect {
 
 .hide {
   display: none;
+}
+
+#scores {
+  text-align: center;
+  bottom: 0;
+  width: 300px;
+  padding: 10px;
+  border: 5px solid gray;
+  margin: 0;
+}
+
+#score-list {
+  list-style: none;
 }

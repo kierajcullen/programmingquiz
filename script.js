@@ -1,21 +1,29 @@
-// declare variables from html
+// Declare Variables
 var startButton = document.querySelector("#start-btn");
 var nextButton = document.querySelector("#next-btn");
 var questionContainer = document.querySelector("#question-container");
+var container = document.querySelector(".container");
 var questionEl = document.querySelector("#questions");
 var answerEl = document.getElementById("answer-buttons");
 var welcomeEl = document.getElementsByClassName("welcome");
 var timerEl = document.getElementById("timer");
-
+var scoreList = document.querySelector(".score-list");
+var scoreContainer = document.querySelector(".scores");
+console.log(scoreList);
+console.log(scoreContainer);
 var currentQuestion = 0;
 var correctAnswers = 0;
+// Can I populate an array to store the scores and initials, then output after the five questions have been displayed/answered by users?
+var highScores = [];
+var timerInterval;
 
-//let can be updated, but not redeclared, "limited in scope to the statement", covered in office hours
-let shuffleQuestions;
+//let, variable you can change, can't change const
+var shuffleQuestions;
 
-//start quiz
+//Start Quiz
 startButton.addEventListener("click", startGame);
-//fat arrow function, same as function (mentioned in class, not completely comfortable with this yet)
+
+//Fat arrow functions are concise ways of writing functions
 nextButton.addEventListener("click", () => {
   // increment through classes and display
   currentQuestion++;
@@ -26,15 +34,12 @@ function startGame() {
   setTime();
   // hide the start button at the beginnning of the quiz
   startButton.classList.add("hide");
-  // hide the welcome screen after start of the quiz
-  // welcomeElement.classList.add("hide");
   shuffleQuestions = questions.sort(() => Math.random() - 0.5);
   // currentQuestion = 0;
   questionContainer.classList.remove("hide");
   setNextQuestion();
 }
 
-//display the next question
 function displayQuestion() {
   answerEl.innerHTML = "";
   questionEl.innerText = questions[currentQuestion].question;
@@ -45,20 +50,6 @@ function displayQuestion() {
     console.log(button);
     button.innerText = questions[currentQuestion].answer[i];
     button.classList.add("btn");
-    // this needs to target the specific boolean value
-    // if (answer.correct) {
-    //   alert("Correct");
-    //   button.dataset.correct = answer.correct;
-    //   correctAnswers++;
-    // } else if (correctAnswers.incorrect > 0) {
-    //   // decrement time
-    //   //this is not working WHY
-    //   correctAnswers--;
-    //   alert("Incorrect");
-    //   //becomes a local variable
-    //   secondsLeft = secondsLeft - 5;
-    // }
-    // button.addEventListener("click", selectAnswer);
     answerEl.appendChild(button);
   }
 }
@@ -73,11 +64,8 @@ var questions = [
     correctAnswer: "Alerts",
   },
   {
-    // array of objects
     question: "What function do you use to run the same code block?",
-    answer: ["For Loop", "Break Statement", "If-Else", "Break Statement"],
-    // a set condition has to be true"Loop While",
-    // perform different actions based on different conditions"Switch Statement",],
+    answer: ["For Loop", "Switch Statement", "If-Else", "Break Statement"],
     correctAnswer: "For Loop",
   },
   {
@@ -98,45 +86,49 @@ var questions = [
   {
     question: "You've got this one. Free question: ",
     answer: ["Wrong", "Pick this one", "Nope", "Do not click"],
-    // why does prettier add commas after the brackets??
     correctAnswer: "Pick this one",
   },
 ];
 
-//shuffle questions... nice feature to add
+//Shuffle questions... nice feature to add
 function setNextQuestion() {
   resetState();
   displayQuestion(shuffleQuestions[currentQuestion]);
 }
 
-//display 60 second timer after the quiz starts
+//Display 60 second timer once the quiz starts
 var secondsLeft = 60;
 function setTime() {
-  // can ask setInterval using jQuery
-  var timerInterval = setInterval(function () {
+  timerInterval = setInterval(function () {
     secondsLeft--;
-    timerEl.textContent = "Timer: " + secondsLeft + " seconds";
+    timerEl.textContent = secondsLeft + " seconds remaining";
     console.log(secondsLeft);
     // if the score reaches 0, the interval should clear
-    if (secondsLeft === 0) {
+    if (secondsLeft <= 0) {
       clearInterval(timerInterval);
-      //this is also not working and I feel completely incompetent, can you do this with a function?
-      sendMessage("Time is up!");
+      // sendMessage("Time is up!");
+      secondsLeft = 0;
+      timerEl.textContent = secondsLeft + " seconds remaining";
+      console.log(secondsLeft);
     }
   }, 1000);
 }
+// or should I use clear timeout?
+// setTimeout(function () {
+//   holderEl.innerHTML = "";
+//   displayQuestions();
+// }, 3000);
 
-//for some reason this needs to be declared after the display question function
 function resetState() {
-  clearStatusClass(document.body);
-  nextButton.classList.add("hide");
+  // clearStatusClass(document.body);
+  // nextButton.classList.add("hide");
   //put the stop timer here
   while (answerEl.firstChild) {
     answerEl.removeChild(answerEl.firstChild);
   }
 }
 
-//display the correct answer to users by changing the color
+//Check Users Answer and Display Pop-Up Message
 function checkAnswer(event) {
   if (!event.target.matches(".btn")) {
     return;
@@ -148,82 +140,68 @@ function checkAnswer(event) {
   } else {
     alert("That was wrong, but it's ok.");
     secondsLeft = secondsLeft - 5;
-    // timerEl.textContent = "Timer: " + secondsLeft + " seconds";
   }
-  currentQuestion++;
-  displayQuestion();
-  if (shuffleQuestions.length > currentQuestion + 1) {
-    //why doesn't var work?
-    // const select = any.target;
-    // //this has to be declared second... ask elena
-    // // document.querySelectorAll('[questions]');
-    // const correct = select.dataset.correct;
-    // // setStatusClass(document.body, correct);
-    // Array.from(answerEl.children).forEach((button) => {
-    //   setStatusClass(button, button.dataset.correct);
-    // });
 
-    // + 1 to document the final question... ask elena.. confused about this concept
-    nextButton.classList.remove("hide");
-  } else {
-    clearInterval(currentQuestion);
-    // startButton.innerText = "Restart";
-    // startButton.classList.remove("hide");
+  if (shuffleQuestions.length - 1 === currentQuestion) {
+    clearInterval(timerInterval);
     var initials = prompt(
       "Congratulations! You scored " +
         correctAnswers +
         ". Please enter your initials."
     );
     console.log(initials);
+    // Store the users initials and score in local storage
+    if (initials.length > 0 && initials !== null) {
+      var userScore = {
+        userInitials: initials,
+        userScore: correctAnswers,
+      };
+      var storedScores = JSON.parse(localStorage.getItem("highScores"));
+      if (storedScores !== null) {
+        highScores = storedScores;
+      }
+      highScores.push(userScore);
+      localStorage.setItem("highScores", JSON.stringify(highScores));
+      renderScores();
+    } else {
+      alert("Cannot Save Your Score");
+    }
+  } else {
+    currentQuestion++;
+    displayQuestion();
   }
-  // if (initials == null) {
-  //   prompt("Please enter your initials!");
+
+  // Display the users initials and score at the end of the quiz
+  function renderScores() {
+    scoreContainer.classList.remove("hide");
+    container.classList.add("hide");
+    var storedScores = JSON.parse(localStorage.getItem("highScores"));
+    if (storedScores !== null) {
+      highScores = storedScores;
+    }
+    for (var i = 0; i < highScores.length; i++) {
+      // var theScore = highScores[i];
+      var li = document.createElement("li");
+      li.textContent =
+        highScores[i].userInitials + ": " + highScores[i].userScore;
+      li.className = "list-group-item";
+      scoreList.appendChild(li);
+    }
+  }
+
+  // function setStatusClass(element, correct) {
+  //   clearStatusClass(element);
+  //   if (correct) {
+  //     element.classList.add("correct");
+  //   } else {
+  //     element.classList.add("incorrect");
+  //   }
+  // }
+
+  // function clearStatusClass(element) {
+  //   element.classList.remove("correct");
+  //   element.classList.remove("incorrect");
   // }
 }
-
-//can i link the score and the output here?
-
-// createSubmit.addEventListener("click", function () {
-//   var initials = createInput.value;
-
-//   if (initials === null) {
-
-//       console.log("Please enter your initials.");
-
-//   } else {
-//    display final score and
-
-//       }
-// console.log(finalScore);
-// var allScores = localStorage.getItem("allScores");
-// if (allScores === null) {
-//     allScores = [];
-// } else {
-//     allScores = JSON.parse();
-// }
-// allScores.push(finalScore);
-// var  = JSON.stringify();
-// localStorage.setItem("", );
-
-// }
-
-function setStatusClass(element, correct) {
-  clearStatusClass(element);
-  if (correct) {
-    element.classList.add("correct");
-    // correctAnswers++;
-  } else {
-    element.classList.add("incorrect");
-    // correctAnswer--;
-  }
-}
-
-function clearStatusClass(element) {
-  element.classList.remove("correct");
-  element.classList.remove("incorrect");
-}
-
-//Not responsive
-//Make sure the timer decrements correctly and stops when the questions are over
 
 answerEl.addEventListener("click", checkAnswer);
