@@ -12,4 +12,4 @@ https://kierajcullen.github.io/programmingquiz/
 
 # Webpage
 
-![](screencapture.mp4)
+![](screencapture.gif)
