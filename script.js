@@ -9,10 +9,11 @@ var welcomeEl = document.getElementsByClassName("welcome");
 var timerEl = document.getElementById("timer");
 var scoreList = document.querySelector(".score-list");
 var scoreContainer = document.querySelector(".scores");
-console.log(scoreList);
-console.log(scoreContainer);
+// console.log(scoreList);
+// console.log(scoreContainer);
 var currentQuestion = 0;
 var correctAnswers = 0;
+var secondsLeft;
 // Can I populate an array to store the scores and initials, then output after the five questions have been displayed/answered by users?
 var highScores = [];
 var timerInterval;
@@ -90,7 +91,7 @@ var questions = [
   },
 ];
 
-//Shuffle questions... nice feature to add
+//Shuffle questions
 function setNextQuestion() {
   resetState();
   displayQuestion(shuffleQuestions[currentQuestion]);
@@ -101,28 +102,23 @@ var secondsLeft = 60;
 function setTime() {
   timerInterval = setInterval(function () {
     secondsLeft--;
+    // display timer
     timerEl.textContent = secondsLeft + " seconds remaining";
     console.log(secondsLeft);
     // if the score reaches 0, the interval should clear
     if (secondsLeft <= 0) {
-      clearInterval(timerInterval);
-      // sendMessage("Time is up!");
       secondsLeft = 0;
       timerEl.textContent = secondsLeft + " seconds remaining";
       console.log(secondsLeft);
+      // if(secondsLeft === 0){
+
+      // }
     }
   }, 1000);
 }
-// or should I use clear timeout?
-// setTimeout(function () {
-//   holderEl.innerHTML = "";
-//   displayQuestions();
-// }, 3000);
 
 function resetState() {
   // clearStatusClass(document.body);
-  // nextButton.classList.add("hide");
-  //put the stop timer here
   while (answerEl.firstChild) {
     answerEl.removeChild(answerEl.firstChild);
   }
@@ -139,11 +135,21 @@ function checkAnswer(event) {
     correctAnswers++;
   } else {
     alert("That was wrong, but it's ok.");
-    secondsLeft = secondsLeft - 5;
+    secondsLeft = secondsLeft - 4;
   }
 
-  if (shuffleQuestions.length - 1 === currentQuestion) {
+  function clearTime() {
     clearInterval(timerInterval);
+  }
+
+  if (shuffleQuestions.length - 1 === currentQuestion || secondsLeft === 0) {
+    secondsLeft--;
+    if (secondsLeft === 0) {
+      clearTime();
+      console.log("Times Up");
+    }
+    timerEl.textContent = secondsLeft + " seconds remaining";
+    console.log(secondsLeft);
     var initials = prompt(
       "Congratulations! You scored " +
         correctAnswers +
@@ -188,20 +194,6 @@ function checkAnswer(event) {
       scoreList.appendChild(li);
     }
   }
-
-  // function setStatusClass(element, correct) {
-  //   clearStatusClass(element);
-  //   if (correct) {
-  //     element.classList.add("correct");
-  //   } else {
-  //     element.classList.add("incorrect");
-  //   }
-  // }
-
-  // function clearStatusClass(element) {
-  //   element.classList.remove("correct");
-  //   element.classList.remove("incorrect");
-  // }
 }
 
 answerEl.addEventListener("click", checkAnswer);

@@ -7,8 +7,8 @@
 
 :root {
   --hue-neutral: 200;
-  --hue-correct: 145;
-  --hue-incorrect: 0;
+  /* --hue-correct: 145; */
+  /* --hue-incorrect: 0; */
 }
 
 header {
