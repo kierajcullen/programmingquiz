@@ -13,10 +13,10 @@ var scoreContainer = document.querySelector(".scores");
 // console.log(scoreContainer);
 var currentQuestion = 0;
 var correctAnswers = 0;
-var secondsLeft;
+var secondsLeft = 0;
 // Can I populate an array to store the scores and initials, then output after the five questions have been displayed/answered by users?
 var highScores = [];
-var timerInterval;
+var timerInterval = 0;
 
 //let, variable you can change, can't change const
 var shuffleQuestions;
@@ -55,9 +55,8 @@ function displayQuestion() {
   }
 }
 
-//create array of questions... i believe that is the only way to do it
 //could link to HTML instead
-//can i link to the boolean value true to select the correct answer?
+//could index or try to use something to target the value of objects in an array
 var questions = [
   {
     question: "Commonly used datatypes include all of the following, except: ",
@@ -118,7 +117,6 @@ function setTime() {
 }
 
 function resetState() {
-  // clearStatusClass(document.body);
   while (answerEl.firstChild) {
     answerEl.removeChild(answerEl.firstChild);
   }
@@ -138,16 +136,24 @@ function checkAnswer(event) {
     secondsLeft = secondsLeft - 4;
   }
 
-  function clearTime() {
-    clearInterval(timerInterval);
-  }
+  // function clearTime() {
+  //   clearInterval(timerInterval);
+  // }
 
-  if (shuffleQuestions.length - 1 === currentQuestion || secondsLeft === 0) {
+  if (shuffleQuestions.length - 1 === currentQuestion) {
     secondsLeft--;
-    if (secondsLeft === 0) {
-      clearTime();
-      console.log("Times Up");
-    }
+    // if (secondsLeft === 0) {
+    //   clearTime();
+    //   alert("Time's Up");
+    //   console.log(secondsLeft);
+    // }
+    timerEl.textContent = secondsLeft + " seconds remaining";
+    console.log(secondsLeft);
+    // if (secondsLeft === 0) {
+    //   clearInterval(secondsLeft);
+    //   alert("Time's Up");
+    //   console.log("Times Up");
+    // }
     timerEl.textContent = secondsLeft + " seconds remaining";
     console.log(secondsLeft);
     var initials = prompt(
